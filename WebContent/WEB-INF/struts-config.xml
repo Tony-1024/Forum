@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <form-beans>
+      <form-bean name="searchForm" type="com.forum.actionform.SearchForm"/>
+      <form-bean name="jumpForm" type="com.forum.actionform.JumpForm"/>
+      <form-bean name="ableForm" type="com.forum.actionform.AbleForm"/>
+      
+      <form-bean name="classForm" type="com.forum.actionform.ClassForm"/>
+      <form-bean name="boardForm" type="com.forum.actionform.BoardForm"/>
+      <form-bean name="bbsForm" type="com.forum.actionform.BbsForm"/>
+      <form-bean name="bbsAnswerForm" type="com.forum.actionform.BbsAnswerForm"/>
+      <form-bean name="userForm" type="com.forum.actionform.UserForm"/>
+  </form-beans>
+  <action-mappings>
+      <action
+             	path="/goIndex"
+             	type="com.forum.action.IndexAction">
+             	<forward name="success" path="/view/indexTemp.jsp"/>
+      </action>
+      <action
+             	path="/user/isUserLogin"
+             	type="com.forum.action.LogXAction"
+             	parameter="method">
+             	<forward name="noLogin" path="/pages/login.jsp"/>
+             	<forward name="FhaveLogin" path="/pages/message.jsp"/>
+      </action>
+      <action
+             	path="/user/isAdminLogin"
+             	type="com.forum.action.LogXAction"
+             	parameter="method">
+             	<forward name="noLogin" path="/pages/login.jsp"/>
+             	<forward name="BhaveLogin" path="/pages/admin/view/adminTemp.jsp"/>
+             	<forward name="noAble" path="/pages/message.jsp"/>
+      </action>      
+      <action
+             	path="/user/login"
+             	type="com.forum.action.LogXAction"
+             	parameter="method"
+             	name="userForm"
+             	validate="true"
+             	input="/pages/login.jsp"
+             	scope="request">
+             	<forward name="success" path="/index.jsp"/>
+             	<forward name="fault" path="/pages/login.jsp"/>
+      </action>
+      <action
+             	path="/user/getpasswd"
+             	type="com.forum.action.ForgetPasswd"
+             	parameter="method"
+             	name="userForm"
+             	validate="false"
+             	input="/pages/getPasswd.jsp"
+             	scope="request">
+             	<forward name="getPasswd" path="/pages/getPasswd.jsp"/>
+      </action>
+      <action
+      			path="/user/logout"
+      			type="com.forum.action.LogXAction"
+      			parameter="method">
+      			<forward name="logout" path="/goIndex.do"/>
+      </action>    
+      <action
+                path="/user/reg"
+                type="com.forum.action.LogXAction"
+                parameter="method"
+                name="userForm"
+                scope="request"
+                validate="true"
+                input="/view/indexTemp.jsp">
+                <forward name="result" path="/view/indexTemp.jsp"/>
+      </action>
+      <action
+             	path="/user/search"
+             	type="com.forum.action.SearchAction"
+             	name="searchForm"
+             	validate="true"
+             	input="/view/indexTemp.jsp"
+             	scope="request">
+             	<forward name="success" path="/view/indexTemp.jsp"/>
+      </action>
+      <action 
+            	path="/user/listShow"
+             	type="com.forum.action.BbsAction"
+             	parameter="method"
+             	validate="false">
+             	<forward name="success" path="/view/indexTemp.jsp"/>
+      </action>                     
+      <action
+             	path="/user/jumpBoard"
+             	name="jumpForm"
+             	scope="request"
+             	forward="/user/listShow.do"/>             
+      <action
+             	path="/user/openShow"
+             	type="com.forum.action.BbsAction"
+             	parameter="method">
+            	<forward name="success" path="/view/indexTemp.jsp"/>
+      </action>      
+      <action
+            	path="/user/goodListShow"
+            	type="com.forum.action.BbsAction"
+            	parameter="method"
+            	validate="false">
+             	<forward name="success" path="/view/indexTemp.jsp"/>
+      </action>
+      <action
+                path="/bbs/user/getUserSingle"
+                type="com.forum.action.BbsAction"
+                parameter="method">
+                <forward name="success" path="/view/indexTemp.jsp"/>
+                <forward name="errr" path="/pages/message.jsp"/>
+      </action> 
+                 
+      <action
+             	path="/needLogin/my/listShow"
+             	type="com.forum.action.OwnAction"
+             	parameter="method"
+             	validate="false">
+             	<forward name="success" path="/view/indexTemp.jsp"/>
+      </action>  
+      
+      <action 
+                path="/needLogin/admin/doTopGood"
+                type="com.forum.action.AdminAction"
+                parameter="method">
+                <forward name="success" path="/user/openShow.do?method=openShow"/>
+                <forward name="error" path="/view/indexTemp.jsp"/>                
+      </action>
+      <action
+                path="/needLogin/admin/deleteAnswer"
+                type="com.forum.action.AdminAction"
+                parameter="method">
+                <forward name="success" path="/user/openShow.do?method=openShow"/>
+                <forward name="error" path="/view/indexTemp.jsp"/>                
+      </action>
+      <action
+                path="/needLogin/admin/getClassList"
+                type="com.forum.action.AdminAction"
+                parameter="method">
+                <forward name="success" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>
+      <action
+      			path="/needLogin/admin/modifyClass"
+      			type="com.forum.action.AdminAction"
+      			parameter="method"
+      			name="classForm"
+      			scope="request"
+      			validate="true"
+      			input="/pages/admin/view/adminTemp.jsp">
+      			<forward name="showModifyJSP" path="/pages/admin/view/adminTemp.jsp"/>      			
+      			<forward name="success" path="/needLogin/admin/getClassList.do?method=getClassList"/>      			
+      			<forward name="error" path="/pages/admin/view/adminTemp.jsp"/>      			      			
+      </action>      
+      <action
+                path="/needLogin/admin/addClass"
+                type="com.forum.action.AdminAction"
+                name="classForm"
+                scope="request"
+                parameter="method"
+                validate="true"
+                input="/pages/admin/view/adminTemp.jsp">
+                <forward name="result" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>
+      <action
+                path="/needLogin/admin/deleteClass"
+                type="com.forum.action.AdminAction"
+                parameter="method">
+                <forward name="success" path="/needLogin/admin/getClassList.do?method=getClassList"/>
+                <forward name="error" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>
+      <action
+                path="/needLogin/admin/getBoardList"
+                type="com.forum.action.AdminAction"
+                name="classForm"
+                scope="request"
+                parameter="method"
+                validate="false">
+                <forward name="success" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>    
+      <action
+      			path="/needLogin/admin/modifyBoard"
+      			type="com.forum.action.AdminAction"
+      			parameter="method"
+      			name="boardForm"
+      			scope="request"
+      			validate="true"
+      			input="/pages/admin/view/adminTemp.jsp">
+      			<forward name="showModifyJSP" path="/pages/admin/view/adminTemp.jsp"/>
+      			<forward name="success" path="/needLogin/admin/getBoardList.do?method=getBoardList&amp;type=show"/>      			
+      			<forward name="error" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>      
+      <action
+                path="/needLogin/admin/addBoard"
+                type="com.forum.action.AdminAction"
+                name="boardForm"
+                scope="request"
+                parameter="method"
+                validate="true"
+                input="/pages/admin/view/adminTemp.jsp">
+                <forward name="result" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>      
+      <action
+                path="/needLogin/admin/deleteBoard"
+                type="com.forum.action.AdminAction"
+                parameter="method">
+                <forward name="success" path="/needLogin/admin/getBoardList.do?method=getBoardList&amp;type=show"/>
+                <forward name="error" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>
+      <action
+                path="/needLogin/admin/getUserList"
+                type="com.forum.action.AdminAction"
+                parameter="method"
+                name="ableForm"
+                scope="request"
+                validate="false">
+                <forward name="success" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>
+      <action
+      			path="/needLogin/admin/modifyUser"
+      			type="com.forum.action.AdminAction"
+      			parameter="method"
+      			name="userForm"
+      			scope="request"
+      			validate="true"
+      			input="/pages/admin/view/adminTemp.jsp">
+      			<forward name="showModifyJSP" path="/pages/admin/view/adminTemp.jsp"/>
+      			<forward name="success" path="/needLogin/admin/getUserList.do?method=getUserList&amp;type=show"/>
+                <forward name="error" path="/pages/admin/view/adminTemp.jsp"/>
+      </action>
+      <action
+                path="/needLogin/admin/deleteUser"
+                type="com.forum.action.AdminAction"
+                parameter="method">
+                <forward name="success" path="/needLogin/admin/getUserList.do?method=getUserList&amp;type=show"/>
+                <forward name="error" path="/pages/admin/view/adminTemp.jsp"/>                
+      </action>
+                      
+      <action
+             	path="/needLogin/addBbs"
+             	type="com.forum.action.BbsAction"
+             	parameter="method"
+             	name="bbsForm"
+             	scope="request"
+             	validate="true"
+             	input="/view/indexTemp.jsp">
+             	<forward name="showAddJSP" path="/view/indexTemp.jsp"/>
+             	<forward name="success" path="/user/listShow.do?method=rootListShow"/>
+             	<forward name="error" path="/view/indexTemp.jsp"/>
+      </action>
+      <action
+             	path="/needLogin/answerBbs"
+             	type="com.forum.action.BbsAction"
+             	parameter="method"
+             	name="bbsAnswerForm"
+             	scope="request"
+             	validate="true"
+             	input="/view/indexTemp.jsp">
+             	<forward name="success" path="/user/openShow.do?method=openShow"/>
+             	<forward name="error" path="/view/indexTemp.jsp"/>
+      </action>
+      <action
+             	path="/needLogin/firstBbs"
+             	type="com.forum.action.BbsAction"
+             	parameter="method">
+             	<forward name="success" path="/user/openShow.do?method=openShow"/>
+             	<forward name="error" path="/view/indexTemp.jsp"/>
+      </action>
+      <action
+             	path="/needLogin/deleteRoot"
+             	type="com.forum.action.BbsAction"
+             	parameter="method">
+             	<forward name="success" path="/user/listShow.do?method=rootListShow"/>
+             	<forward name="error" path="/view/indexTemp.jsp"/>
+      </action>
+  </action-mappings>
+  <controller processorClass="com.forum.tools.ToChangeEncode"/>
+  <message-resources parameter="com.forum.Messages" />
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+	  <set-property 
+           property="pathnames" 
+           value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+  </plug-in>  
+</struts-config>
+
